@@ -86,7 +86,7 @@ export default function FeesPage() {
             discuss scholarship eligibility. Let's build your child's success story together.
           </p>
           <Button asChild className="font-headline bg-orange-500 text-white hover:bg-orange-600 shadow-lg px-8 py-6 text-base transition-transform duration-300 hover:-translate-y-1 hover:scale-105">
-            <Link href="/contact">Contact Admissions <ArrowRight className="ml-2 h-5 w-5" /></Link>
+            <Link href="tel:7905927527">Contact Admissions <ArrowRight className="ml-2 h-5 w-5" /></Link>
           </Button>
         </div>
       </section>
