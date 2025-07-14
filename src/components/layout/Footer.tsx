@@ -15,7 +15,7 @@ export function Footer() {
             <p className="mt-4 text-sm text-muted-foreground">
               Varanasi's Premier Coaching Institute.
               <br />
-              © {new Date().getFullYear()} PHOTON Inc. All rights reserved. (Static Deployment)
+              © {new Date().getFullYear()} PHOTON Inc. All rights reserved.
             </p>
           </div>
           
