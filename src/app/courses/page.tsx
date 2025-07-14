@@ -7,7 +7,7 @@ import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: "Courses | PHOTON Coaching Varanasi",
-  description: "Explore the comprehensive courses offered by PHOTON Coaching for IIT-JEE & NEET preparation, designed for success.",
+  description: "Discover comprehensive IIT-JEE Main & Advanced, NEET-UG, and Board exam coaching programs at PHOTON Coaching in Varanasi. Expert faculty, proven results, and personalized mentorship for success.",
 };
 
 const commonFeatures = [

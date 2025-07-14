@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "Testimonials | PHOTON Coaching Varanasi",
-  description: "Read student success stories and testimonials from PHOTON Coaching Varanasi.",
+  description: "Read inspiring success stories and testimonials from JEE, NEET, and Board exam toppers at PHOTON Coaching Varanasi. Discover why students choose us for top results.",
 };
 
 const testimonials = [

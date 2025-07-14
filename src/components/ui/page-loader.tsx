@@ -10,34 +10,34 @@ const PageLoader = () => {
   const pathname = usePathname();
   const [isLoading, setIsLoading] = useState(false); // State to control custom animation visibility
 
+  const handleStart = () => {
+    NProgress.start();
+    setIsLoading(true); // Show custom animation when NProgress starts
+  };
+
+  const handleComplete = () => {
+    NProgress.done();
+    // Ensure the loader stays for a minimum duration if content loads too fast
+    setTimeout(() => {
+      setIsLoading(false); // Hide custom animation when NProgress completes
+    }, 300); // Minimum display time for the loader
+  };
+
   useEffect(() => {
     NProgress.configure({ showSpinner: false });
 
-    const handleStart = () => {
-      NProgress.start();
-      setIsLoading(true); // Show custom animation when NProgress starts
-    };
-    const handleComplete = () => {
-      NProgress.done();
-      setIsLoading(false); // Hide custom animation when NProgress completes
-    };
-
-    // Initial load handling
-    handleComplete();
-
-    return () => {
-      handleComplete(); // Clean up on unmount
-    };
-  }, []);
-
-  useEffect(() => {
-    // Trigger NProgress and custom animation on pathname change (client-side navigation)
+    // On initial load or pathname change
     handleStart();
+    // Simulate content loading time or wait for actual data fetching completion
+    // For now, we'll use a timeout to simulate completion
     const timer = setTimeout(() => {
       handleComplete();
-    }, 300); // Simulate a minimum loading time for custom animation
+    }, 500); // Adjust this value as needed for perceived loading time
 
-    return () => clearTimeout(timer);
+    return () => {
+      clearTimeout(timer);
+      handleComplete(); // Clean up on unmount or component re-render
+    };
   }, [pathname]);
 
   return (
