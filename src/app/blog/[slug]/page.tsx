@@ -14,6 +14,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
+export async function generateStaticParams() {
+  // For static export, you need to provide a list of all possible slugs
+  // In a real application, you would fetch this from your CMS or markdown files
+  return [
+    { slug: 'first-blog-post' },
+    { slug: 'second-blog-post' },
+    // Add more slugs as needed
+  ];
+}
+
 export default function BlogPostPage({ params }: Props) {
   return (
     <div className="min-h-screen bg-blue-50 py-12 md:py-24">
