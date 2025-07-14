@@ -1,0 +1,12 @@
+{
+  "/_not-found/page": "app/_not-found/page.js",
+  "/api/submit-form/route": "app/api/submit-form/route.js",
+  "/contact/page": "app/contact/page.js",
+  "/fees/page": "app/fees/page.js",
+  "/faculty/page": "app/faculty/page.js",
+  "/about/page": "app/about/page.js",
+  "/results/page": "app/results/page.js",
+  "/testimonials/page": "app/testimonials/page.js",
+  "/page": "app/page.js",
+  "/courses/page": "app/courses/page.js"
+}
