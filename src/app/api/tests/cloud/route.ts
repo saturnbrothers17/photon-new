@@ -1,69 +1,37 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { GoogleDriveAutoSync } from '@/lib/google-drive-auto-sync';
+import { createClient } from '@supabase/supabase-js';
 
-// GET - Fetch all published tests from cloud
+// GET - Fetch all published tests from Supabase
 export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url);
-    const tokensParam = searchParams.get('tokens');
-    
-    if (!tokensParam) {
-      return NextResponse.json(
-        { success: false, error: 'Authentication tokens required' },
-        { status: 401 }
-      );
+    const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    );
+
+    console.log('📥 Fetching published tests from Supabase...');
+
+    // Fetch all published tests
+    const { data: tests, error } = await supabase
+      .from('tests')
+      .select('*')
+      .eq('status', 'published')
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      throw error;
     }
 
-    console.log('📥 Fetching tests from cloud for students...');
-    const tokens = JSON.parse(decodeURIComponent(tokensParam));
-    const autoSync = new GoogleDriveAutoSync(tokens);
-
-    // Get all test files from the PHOTON Tests folder
-    const testFiles = await autoSync.listFolderContents(['PHOTON Coaching Institute', 'PHOTON Tests']);
-    
-    const tests = [];
-    for (const file of testFiles) {
-      if (file.name.endsWith('.json') && file.name.includes('test_')) {
-        try {
-          // Download and parse the test file
-          const testContent = await downloadFileContent(autoSync, file.id);
-          const testData = JSON.parse(testContent);
-          
-          // Add cloud metadata
-          testData.cloudId = file.id;
-          testData.cloudFileName = file.name;
-          testData.lastModified = file.modifiedTime;
-          testData.fileSize = file.size;
-          testData.isCloudTest = true;
-          
-          tests.push(testData);
-        } catch (error) {
-          console.error(`Error processing test file ${file.name}:`, error);
-          // Add basic info even if we can't parse the content
-          tests.push({
-            id: file.id,
-            cloudId: file.id,
-            name: file.name.replace('.json', '').replace(/test_\d+_\d+/, ''),
-            status: 'published',
-            type: extractTestType(file.name),
-            createdTime: file.createdTime,
-            isCloudTest: true,
-            error: 'Could not load full test data'
-          });
-        }
-      }
-    }
-
-    console.log(`✅ Found ${tests.length} tests in cloud`);
+    console.log(`✅ Found ${tests?.length || 0} published tests`);
     return NextResponse.json({ 
       success: true, 
-      tests: tests,
-      totalTests: tests.length,
-      source: 'cloud'
+      tests: tests || [],
+      totalTests: tests?.length || 0,
+      source: 'supabase'
     });
 
   } catch (error: any) {
-    console.error('❌ Error fetching tests from cloud:', error);
+    console.error('❌ Error fetching tests from Supabase:', error);
     return NextResponse.json(
       { 
         success: false, 
@@ -76,51 +44,54 @@ export async function GET(request: NextRequest) {
   }
 }
 
-// POST - Publish test to cloud (for teachers)
+// POST - Publish test to Supabase (for teachers)
 export async function POST(request: NextRequest) {
   try {
-    const { tokens, testData, questions } = await request.json();
+    const { testData, questions } = await request.json();
     
-    if (!tokens || !testData) {
+    if (!testData) {
       return NextResponse.json(
-        { success: false, error: 'Tokens and test data are required' },
+        { success: false, error: 'Test data is required' },
         { status: 400 }
       );
     }
 
-    console.log('📤 Publishing test to cloud:', testData.name);
-    const autoSync = new GoogleDriveAutoSync(tokens);
+    const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    );
+
+    console.log('📤 Publishing test to Supabase:', testData.name);
 
     // Create comprehensive test package
     const testPackage = {
       ...testData,
       questions: questions || [],
-      publishedAt: new Date().toISOString(),
-      publishedBy: 'PHOTON Faculty',
-      version: '1.0',
-      cloudId: `test_${testData.id}_${Date.now()}`,
-      accessLevel: 'student',
-      metadata: {
-        totalQuestions: questions?.length || 0,
-        subjects: testData.subjects || [],
-        estimatedDuration: testData.duration,
-        maxMarks: testData.maxMarks || (questions?.reduce((sum: number, q: any) => sum + (q.marks || 1), 0) || 0)
-      }
+      status: 'published',
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString()
     };
 
-    // Upload to Google Drive
-    const fileId = await autoSync.uploadTest(testPackage);
-    
-    console.log('✅ Test published to cloud with ID:', fileId);
+    // Insert into Supabase
+    const { data, error } = await supabase
+      .from('tests')
+      .insert(testPackage)
+      .select()
+      .single();
+
+    if (error) {
+      throw error;
+    }
+
+    console.log('✅ Test published to Supabase with ID:', data.id);
     return NextResponse.json({ 
       success: true, 
-      fileId: fileId,
-      cloudId: testPackage.cloudId,
-      message: 'Test published to cloud successfully'
+      testId: data.id,
+      message: 'Test published to Supabase successfully'
     });
 
   } catch (error: any) {
-    console.error('❌ Error publishing test to cloud:', error);
+    console.error('❌ Error publishing test to Supabase:', error);
     return NextResponse.json(
       { 
         success: false, 
@@ -128,18 +99,6 @@ export async function POST(request: NextRequest) {
       },
       { status: 500 }
     );
-  }
-}
-
-// Helper function to download file content
-async function downloadFileContent(autoSync: GoogleDriveAutoSync, fileId: string): Promise<string> {
-  // This is a simplified version - in reality, you'd need to implement
-  // a method in GoogleDriveAutoSync to download file content
-  try {
-    const testData = await autoSync.loadTest(fileId);
-    return JSON.stringify(testData);
-  } catch (error) {
-    throw new Error(`Failed to download file content: ${error}`);
   }
 }
 

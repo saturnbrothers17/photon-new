@@ -15,17 +15,13 @@ import {
   Sparkles
 } from 'lucide-react';
 import { powerfulExtractor } from '@/lib/ai-question-extractor';
-import { useGoogleDriveAPI } from '@/hooks/useGoogleDriveAPI';
 
 export default function AIExtractionTest() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [extractionResult, setExtractionResult] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
-  const [isSaving, setIsSaving] = useState(false);
-  const [saveResult, setSaveResult] = useState<string | null>(null);
-  
-  const { saveTest } = useGoogleDriveAPI();
+
 
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -53,51 +49,18 @@ export default function AIExtractionTest() {
     }
   };
 
-  const handleSaveToDrive = async () => {
-    if (!extractionResult || !extractionResult.questions.length) return;
 
-    setIsSaving(true);
-    setError(null);
-    
-    try {
-      // Create a test object with the extracted questions
-      const testObject = {
-        id: `test_${Date.now()}`,
-        title: `AI Extracted Questions - ${new Date().toLocaleDateString()}`,
-        subject: 'General',
-        questions: extractionResult.questions.map((q: any, index: number) => ({
-          id: q.id,
-          question: q.questionText,
-          options: q.options,
-          correctAnswer: q.correctAnswer || 0,
-          marks: q.marks || 4,
-          subject: q.subject || 'General',
-          difficulty: q.difficulty || 'Medium',
-          explanation: q.explanation || ''
-        })),
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString()
-      };
-
-      const fileId = await saveTest(testObject);
-      setSaveResult(`Successfully saved to Google Drive with ID: ${fileId}`);
-    } catch (err: any) {
-      setError(err.message || 'Failed to save to Google Drive');
-    } finally {
-      setIsSaving(false);
-    }
-  };
 
   return (
     <div className="space-y-6">
       <Card className="border-2 border-purple-200 bg-gradient-to-br from-purple-50 to-blue-50">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Sparkles className="h-6 w-6 text-purple-600" />
-            AI Extraction & Google Drive Test
+            <Sparkles className="h-5 w-5 text-purple-600" />
+            AI Extraction Test
           </CardTitle>
           <CardDescription>
-            Test the AI question extraction and Google Drive saving functionality
+            Test the AI question extraction functionality
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
@@ -206,20 +169,7 @@ export default function AIExtractionTest() {
                   )}
                 </div>
                 
-                <Button 
-                  onClick={handleSaveToDrive}
-                  disabled={isSaving}
-                  className="w-full bg-blue-600 hover:bg-blue-700 text-white"
-                >
-                  <Cloud className="h-4 w-4 mr-2" />
-                  {isSaving ? 'Saving to Drive...' : 'Save to Google Drive'}
-                </Button>
-                
-                {saveResult && (
-                  <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg text-center">
-                    <p className="text-sm text-blue-700">{saveResult}</p>
-                  </div>
-                )}
+
               </CardContent>
             </Card>
           )}
