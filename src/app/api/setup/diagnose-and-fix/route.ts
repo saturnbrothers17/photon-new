@@ -20,7 +20,17 @@ export async function POST() {
     ];
 
     // First, check if users already exist
-    const existingUsers = [];
+    type ResultEntry = {
+      email: string;
+      name: string;
+      status: 'already_exists' | 'created' | 'error';
+      message?: string;
+      attempts?: string[];
+      userId?: string;
+      created_at?: string;
+    };
+
+    const existingUsers: ResultEntry[] = [];
     for (const teacher of teachers) {
       try {
         const { data: users, error } = await supabaseAdmin.auth.admin.listUsers();
@@ -42,7 +52,7 @@ export async function POST() {
     }
 
     // Try to create missing users
-    const results = [...existingUsers];
+    const results: ResultEntry[] = [...existingUsers];
     const missingTeachers = teachers.filter(t => !existingUsers.find(e => e.email === t.email));
 
     for (const teacher of missingTeachers) {
