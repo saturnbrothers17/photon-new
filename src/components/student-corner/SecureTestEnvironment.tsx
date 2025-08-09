@@ -9,20 +9,34 @@ import { Badge } from "@/components/ui/badge";
 import "@/styles/secure-test.css";
 
 interface SecureTestEnvironmentProps {
-  testData: any;
-  questions: any[];
-  onTestSubmit: (answers: any, flags: any, timeTaken: number) => void;
-  onExitSecureMode: () => void;
+  testData?: any;
+  questions?: any[];
+  onTestSubmit?: (answers: any, flags: any, timeTaken: number) => void;
+  onExitSecureMode?: () => void;
   children?: ReactNode;
+  onViolation?: (violationType: string) => void;
+  violationCount?: number;
+  maxViolations?: number;
 }
 
 export default function SecureTestEnvironment({ 
   testData, 
-  questions, 
-  onTestSubmit, 
-  onExitSecureMode,
+  questions = [] as any[],
+  onTestSubmit = ((): ((answers: any, flags: any, timeTaken: number) => void) => {
+    return () => {};
+  })(),
+  onExitSecureMode = ((): (() => void) => {
+    return () => {};
+  })(),
   children,
+  onViolation,
+  violationCount,
+  maxViolations,
 }: SecureTestEnvironmentProps) {
+  // If used as a wrapper, render children directly
+  if (children && (!testData || !questions || !onTestSubmit || !onExitSecureMode)) {
+    return <div>{children}</div>;
+  }
   // Test state
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState<{ [key: number]: string }>({});
