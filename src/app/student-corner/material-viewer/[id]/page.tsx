@@ -35,6 +35,17 @@ export default function SecureMaterialViewer() {
   const viewerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (viewerRef.current) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore - Disabling for dynamic style update
+      viewerRef.current.style.setProperty('--zoom-scale', (zoom / 100).toString());
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore - Disabling for dynamic style update
+      viewerRef.current.style.setProperty('--rotation-deg', `${rotation}deg`);
+    }
+  }, [zoom, rotation]);
+
+  useEffect(() => {
     // Enhanced security measures
     const preventScreenshot = () => {
       // Disable right-click context menu
@@ -426,10 +437,6 @@ export default function SecureMaterialViewer() {
               <div
                 ref={viewerRef}
                 className={`secure-content bg-white rounded-lg p-4 min-h-96 relative overflow-hidden ${styles.viewerContent}`}
-                style={{
-                  '--zoom-scale': zoom / 100,
-                  '--rotation-deg': `${rotation}deg`,
-                } as React.CSSProperties}
               >
                 {/* Watermark */}
                 <div className="absolute inset-0 pointer-events-none z-10">
