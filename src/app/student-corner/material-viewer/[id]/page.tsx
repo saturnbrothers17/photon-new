@@ -422,11 +422,10 @@ export default function SecureMaterialViewer() {
             </CardHeader>
             <CardContent>
               {/* PDF Viewer Container */}
-              <div 
+              {/* eslint-disable-next-line react/forbid-dom-props */}
+              <div
                 ref={viewerRef}
                 className={`secure-content bg-white rounded-lg p-4 min-h-96 relative overflow-hidden ${styles.viewerContent}`}
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore - This is a false positive. We are using inline styles for dynamic CSS variables.
                 style={{
                   '--zoom-scale': zoom / 100,
                   '--rotation-deg': `${rotation}deg`,
