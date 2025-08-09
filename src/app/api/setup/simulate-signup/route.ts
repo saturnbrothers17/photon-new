@@ -16,7 +16,15 @@ export async function POST() {
       { email: 'ak5@photon', password: 'ak5@photon', name: 'AK Mishra' }
     ];
 
-    const results = [];
+    type ResultEntry = {
+      email: string;
+      name: string;
+      status: 'created' | 'error';
+      message: string;
+      needsConfirmation?: boolean;
+    };
+
+    const results: ResultEntry[] = [];
 
     for (const teacher of teachers) {
       try {
@@ -36,19 +44,26 @@ export async function POST() {
           // If signup fails, try with service role
           const supabaseServiceKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRlY295eGJrY2lieW5ncHNyd2RyIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1NDQ5OTg5OSwiZXhwIjoyMDcwMDc1ODk5fQ.2fsfenoF2MoDDIDNW6lNuJtAqgNw7CdVA8XkIyoR_QQ';
           const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey);
-          
+
           // Try to manually confirm the user if it was created but not confirmed
-          const { data: adminData, error: adminError } = await supabaseAdmin.auth.admin.updateUserById(
-            data?.user?.id || '',
-            { email_confirm: true }
-          );
+          const userId = (data as any)?.user?.id as string | undefined;
+          let adminError: any = null;
+          if (userId) {
+            const { data: adminData, error: updErr } = await supabaseAdmin.auth.admin.updateUserById(
+              userId,
+              { email_confirm: true }
+            );
+            adminError = updErr;
+          } else {
+            adminError = new Error('No user id available to confirm');
+          }
 
           if (adminError) {
             results.push({
               email: teacher.email,
               name: teacher.name,
               status: 'error',
-              message: `Signup error: ${error.message}, Admin error: ${adminError.message}`
+              message: `Signup error: ${error.message}, Admin error: ${adminError instanceof Error ? adminError.message : String(adminError)}`
             });
           } else {
             results.push({
