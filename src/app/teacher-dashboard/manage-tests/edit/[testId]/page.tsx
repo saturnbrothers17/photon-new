@@ -1,16 +1,21 @@
-import { getAllTests, getTestById } from '@/lib/test-data';
+import { getAllTests, getTestById, TestData } from '@/lib/test-data';
 import EditTestForm from './edit-form';
 
 export async function generateStaticParams() {
-  const tests = getAllTests();
-  return tests.map((test) => ({
+  const tests = await getAllTests();
+  return tests.map((test: TestData) => ({
     testId: test.id.toString(),
   }));
 }
 
-export default function EditTestPage({ params }: { params: { testId: string } }) {
-  const testId = Number(params.testId);
-  const test = getTestById(testId);
+interface PageProps {
+  params: Promise<{ testId: string }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}
+
+export default async function EditTestPage({ params }: PageProps) {
+  const { testId } = await params;
+  const test = await getTestById(testId);
 
   if (!test) {
     return (
