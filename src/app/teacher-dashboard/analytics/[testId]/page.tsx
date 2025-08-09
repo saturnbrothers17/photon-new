@@ -11,12 +11,12 @@ export async function generateStaticParams() {
 }
 
 interface PageProps {
-  params: { testId: string };
-  searchParams: { [key: string]: string | string[] | undefined };
+  params: Promise<{ testId: string }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
 export default async function TestAnalyticsPage({ params }: PageProps) {
-  const { testId } = params;
+  const { testId } = await params;
   const test = await getTestById(testId);
 
   if (!test) {
