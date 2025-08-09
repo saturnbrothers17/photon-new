@@ -1,0 +1,19 @@
+.blob1 {
+  animation-delay: 0s;
+}
+
+.blob2 {
+  animation-delay: 4s;
+}
+
+.blob3 {
+  animation-delay: 8s;
+}
+
+.pstSection {
+  background-color: #00a8e8;
+}
+
+.freeText {
+  color: #ff8c00;
+}

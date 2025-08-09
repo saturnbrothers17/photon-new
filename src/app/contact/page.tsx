@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Mail, MapPin, Phone } from "lucide-react";
 import Link from "next/link";
+import styles from './styles.module.css';
 
 const ContactForm = () => {
   return (
@@ -90,11 +91,11 @@ const ContactPage = () => {
                   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3607.728741834244!2d82.9863475752174!3d25.2795328287955!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x398e31b504953c89%3A0x86701b58535f49bc!2sPHOTON%20-%20IIT%20JEE%20%26%20NEET%20COACHING%20IN%20VARANASI!5e0!3m2!1sen!2sin!4v1721832961858!5m2!1sen!2sin" 
                   width="100%" 
                   height="256" 
-                  style={{ border: 0 }}
                   allowFullScreen={false} 
                   loading="lazy" 
                   referrerPolicy="no-referrer-when-downgrade"
-                  className="pointer-events-none"
+                  className={`pointer-events-none ${styles.mapFrame}`}
+                  title="Location of PHOTON Coaching on Google Maps"
                 ></iframe>
               </Link>
             </CardContent>

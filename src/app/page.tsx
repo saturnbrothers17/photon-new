@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import Link from 'next/link';
 import Image from 'next/image';
+import styles from './styles.module.css';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -92,9 +93,9 @@ export default function Home() {
         <section data-last-deployment={new Date().toISOString()} className="relative w-full overflow-hidden bg-gradient-to-br from-blue-50 via-blue-100 to-cyan-100">
           {/* Decorative blobs */}
           <div className="pointer-events-none absolute inset-0 overflow-hidden">
-            <div className="absolute -top-48 -left-32 w-[400px] h-[400px] bg-blue-400 opacity-60 rounded-full blur-3xl mix-blend-multiply animate-blob" style={{animationDelay:'0s'}} />
-            <div className="absolute top-1/2 right-[-200px] w-[600px] h-[600px] bg-cyan-300 opacity-70 rounded-full blur-3xl mix-blend-multiply animate-blob" style={{animationDelay:'4s'}} />
-            <div className="absolute bottom-[-150px] left-1/2 w-[350px] h-[350px] bg-indigo-300 opacity-50 rounded-full blur-3xl mix-blend-multiply animate-blob" style={{animationDelay:'8s'}} />
+            <div className={`absolute -top-48 -left-32 w-[400px] h-[400px] bg-blue-400 opacity-60 rounded-full blur-3xl mix-blend-multiply animate-blob ${styles.blob1}`} />
+            <div className={`absolute top-1/2 right-[-200px] w-[600px] h-[600px] bg-cyan-300 opacity-70 rounded-full blur-3xl mix-blend-multiply animate-blob ${styles.blob2}`} />
+            <div className={`absolute bottom-[-150px] left-1/2 w-[350px] h-[350px] bg-indigo-300 opacity-50 rounded-full blur-3xl mix-blend-multiply animate-blob ${styles.blob3}`} />
           </div>
           <div className="container mx-auto px-4 md:px-6">
             <div className="grid md:grid-cols-1 gap-8 items-center py-20 md:py-32">
@@ -160,7 +161,7 @@ export default function Home() {
           </div>
         </section>
         
-        <section id="pst" className="w-full py-20 md:py-24" style={{ backgroundColor: '#00a8e8' }}>
+        <section id="pst" className={`w-full py-20 md:py-24 ${styles.pstSection}`}>
           <div className="container mx-auto px-4 md:px-6 text-center text-white">
               <h2 className="font-headline text-4xl sm:text-5xl font-bold tracking-tight">
                   Ace Your Preparation with <span className="text-white">PST</span>
@@ -168,7 +169,7 @@ export default function Home() {
               <p className="mt-2 text-lg font-semibold">(PHOTON Sunday Tests)</p>
 
               <div className="my-8 inline-block bg-white/30 rounded-lg px-6 py-2">
-                <p className="font-headline text-4xl sm:text-5xl font-black" style={{ color: '#ff8c00' }}>
+                <p className={`font-headline text-4xl sm:text-5xl font-black ${styles.freeText}`}>
                     COMPLETELY FREE
                 </p>
               </div>
