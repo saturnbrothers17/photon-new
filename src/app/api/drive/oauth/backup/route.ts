@@ -58,7 +58,7 @@ export async function POST(request: NextRequest) {
 
     const fileMetadata = {
       name: `backup_${Date.now()}.json`,
-      parents: [folderId],
+      parents: folderId ? [folderId.toString()] : [],
     };
 
     const media = {
