@@ -103,7 +103,7 @@ const CourseProgram: React.FC<CourseProgramProps> = ({ title, description, facul
       </div>
       <div className="mt-6 text-right">
         <Button asChild className="font-headline bg-orange-500 text-white hover:bg-orange-600 shadow-lg">
-          <Link href="tel:7905927527">Enquire Now <ArrowRight className="ml-2 h-5 w-5"/></Link>
+          <Link href="tel:9450545318">Enquire Now <ArrowRight className="ml-2 h-5 w-5"/></Link>
         </Button>
       </div>
     </div>

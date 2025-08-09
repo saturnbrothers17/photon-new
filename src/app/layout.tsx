@@ -5,7 +5,11 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { Toaster } from "@/components/ui/toaster";
 import PageLoader from "@/components/ui/page-loader";
+import NavigationOptimizer from "@/components/common/NavigationOptimizer";
+import InstantNavigation from "@/components/common/InstantNavigation";
 import Script from "next/script";
+import { AuthProvider } from "@/components/AuthProvider";
+import { PerformanceWrapper, ResourceHints } from "@/components/PerformanceWrapper";
 
 
 // import { AiAssistant } from "@/components/ai/AiAssistant";
@@ -20,7 +24,7 @@ export default function RootLayout({
 
 
   return (
-    <html lang="en" className="!scroll-smooth">
+    <html lang="en" className="!scroll-smooth" suppressHydrationWarning>
       <head>
         <link rel="icon" href="/favicon.png" type="image/png" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -45,15 +49,22 @@ export default function RootLayout({
           `}
         </Script>
       </head>
-      <body className="font-body antialiased">
-        <Header />
-        <main className="min-h-screen">
-          {children}
-        </main>
+      <body className="font-body antialiased" suppressHydrationWarning>
+        <AuthProvider>
+          <PerformanceWrapper>
+            <NavigationOptimizer />
+            <InstantNavigation />
+            <PageLoader />
+            <Header />
+            <main className="min-h-screen">
+              {children}
+            </main>
 
-        <Footer />
+            <Footer />
 
-        <Toaster />
+            <Toaster />
+          </PerformanceWrapper>
+        </AuthProvider>
       </body>
     </html>
   );

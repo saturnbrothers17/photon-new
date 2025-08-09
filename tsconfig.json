@@ -24,7 +24,8 @@
       ]
     },
     "types": [
-      "node"
+      "node",
+      "next-auth"
     ],
     "forceConsistentCasingInFileNames": true,
     "plugins": [

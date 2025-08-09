@@ -70,7 +70,7 @@ const ContactPage = () => {
               </div>
               <div className="flex items-center gap-4">
                 <Phone className="h-6 w-6 text-primary" />
-                <a href="tel:7905927527" className="text-muted-foreground hover:text-primary transition-colors">(+91) 79059 27527</a>
+                <a href="tel:9450545318" className="text-muted-foreground hover:text-primary transition-colors">(+91) 94505 45318</a>
               </div>
               <div className="flex items-center gap-4">
                 <Mail className="h-6 w-6 text-primary" />

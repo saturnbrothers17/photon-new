@@ -1,9 +1,20 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { Menu, X, Phone } from "lucide-react";
+import { usePathname, useRouter } from "next/navigation";
+import { Menu, X, Phone, User, LogIn, LogOut } from "lucide-react";
+import PhotonLoader from "@/components/ui/photon-loader";
+
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -20,13 +31,17 @@ const navLinks = [
   { href: "/courses", label: "Courses" },
   { href: "/faculty", label: "Faculty" },
   { href: "/fees", label: "Fees" },
+  { href: "/student-corner", label: "Student Corner" },
+  { href: "/teacher-dashboard", label: "Faculty Portal" },
   { href: "/testimonials", label: "Testimonials" },
   { href: "/contact", label: "Contact Us" },
 ];
 
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
+  const [isNavigating, setIsNavigating] = useState(false);
   const pathname = usePathname();
+  const router = useRouter();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -35,6 +50,16 @@ export function Header() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Reset navigation state when pathname changes
+  useEffect(() => {
+    setIsNavigating(false);
+  }, [pathname]);
+
+  const handleNavClick = useCallback((e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    // Don't prevent default - let Next.js handle navigation instantly
+    // No loader, no delay - just instant navigation
+  }, [pathname, router]);
 
   return (
     <header
@@ -60,7 +85,7 @@ export function Header() {
                   <VisuallyHidden>Mobile Navigation Menu</VisuallyHidden>
                 </SheetTitle>
                 <div className="flex justify-between items-center p-4 border-b">
-                   <Link href="/" className="flex items-center gap-2">
+                  <Link href="/" className="flex items-center gap-2">
                     <span className="font-headline text-4xl font-black text-blue-600">
                       PHOTON
                     </span>
@@ -90,7 +115,7 @@ export function Header() {
                   ))}
                   <div className="border-t pt-4 mt-4">
                      <Button asChild className="w-full font-headline bg-orange-600 text-white hover:bg-orange-700">
-                      <Link href="tel:7905927527">Enquire Now</Link>
+                      <Link href="tel:9450545318">Enquire Now</Link>
                     </Button>
                   </div>
                 </nav>
@@ -121,13 +146,15 @@ export function Header() {
           ))}
         </nav>
         <div className="flex items-center gap-2">
-          <a href="tel:7905927527" className="flex items-center justify-center w-11 h-11 rounded-full bg-primary/10 hover:bg-primary/20 transition-colors">
+          <a href="tel:9450545318" className="flex items-center justify-center w-11 h-11 rounded-full bg-primary/10 hover:bg-primary/20 transition-colors">
             <Phone className="w-5 h-5 text-blue-600" />
              <span className="sr-only">Call Us</span>
           </a>
           <Button asChild className="font-headline hidden lg:flex bg-orange-600 text-white hover:bg-orange-700 rounded-full shadow-lg">
-            <Link href="tel:7905927527">Enquire Now</Link>
+            <Link href="tel:9450545318">Enquire Now</Link>
           </Button>
+          
+
         </div>
       </div>
     </header>

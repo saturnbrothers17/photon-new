@@ -1,3 +1,22 @@
 {
-  "/page": "app/page.js"
+  "/_not-found/page": "app/_not-found/page.js",
+  "/about/page": "app/about/page.js",
+  "/api/auth/logout/route": "app/api/auth/logout/route.js",
+  "/api/supabase/live-tests/route": "app/api/supabase/live-tests/route.js",
+  "/api/supabase/study-materials/route": "app/api/supabase/study-materials/route.js",
+  "/api/supabase/tests-simple/route": "app/api/supabase/tests-simple/route.js",
+  "/api/supabase/tests/route": "app/api/supabase/tests/route.js",
+  "/api/teacher/profile/route": "app/api/teacher/profile/route.js",
+  "/api/teacher/results/route": "app/api/teacher/results/route.js",
+  "/api/teacher/stats/route": "app/api/teacher/stats/route.js",
+  "/contact/page": "app/contact/page.js",
+  "/courses/page": "app/courses/page.js",
+  "/faculty-portal/page": "app/faculty-portal/page.js",
+  "/faculty/page": "app/faculty/page.js",
+  "/fees/page": "app/fees/page.js",
+  "/page": "app/page.js",
+  "/student-corner/page": "app/student-corner/page.js",
+  "/student-corner/study-materials/page": "app/student-corner/study-materials/page.js",
+  "/teacher-dashboard/page": "app/teacher-dashboard/page.js",
+  "/testimonials/page": "app/testimonials/page.js"
 }

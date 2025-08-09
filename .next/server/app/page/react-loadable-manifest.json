@@ -1,1 +1,21 @@
-{}
+{
+  "[project]/src/components/student-corner/StudyMaterialsViewer.tsx [app-client] (ecmascript, next/dynamic entry)": {
+    "id": "[project]/src/components/student-corner/StudyMaterialsViewer.tsx [app-client] (ecmascript, next/dynamic entry)",
+    "files": [
+      "static/chunks/node_modules_@supabase_node-fetch_browser_f13c1629.js",
+      "static/chunks/node_modules_701eaec0._.js",
+      "static/chunks/src_components_47c0de39._.js",
+      "static/chunks/src_components_student-corner_StudyMaterialsViewer_module_09e4d2a7.css",
+      "static/chunks/src_components_student-corner_StudyMaterialsViewer_tsx_38efbfd0._.js"
+    ]
+  },
+  "[project]/src/components/teacher-dashboard/PowerfulQuestionExtractor.tsx [app-client] (ecmascript, next/dynamic entry)": {
+    "id": "[project]/src/components/teacher-dashboard/PowerfulQuestionExtractor.tsx [app-client] (ecmascript, next/dynamic entry)",
+    "files": [
+      "static/chunks/node_modules_@supabase_node-fetch_browser_59e073f3.js",
+      "static/chunks/src_877df367._.js",
+      "static/chunks/node_modules_0c76f5c7._.js",
+      "static/chunks/src_components_teacher-dashboard_PowerfulQuestionExtractor_tsx_38efbfd0._.js"
+    ]
+  }
+}

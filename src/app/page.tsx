@@ -114,7 +114,7 @@ export default function Home() {
                 </p>
                 <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
                   <Button asChild size="lg" className="font-headline bg-orange-600 text-white hover:bg-orange-700 shadow-lg px-8 py-6 text-base transition-transform duration-300 hover:-translate-y-1 hover:scale-105">
-                    <a href="tel:7905927527">Enquire Now <ArrowRight className="ml-2 h-5 w-5"/></a>
+                    <a href="tel:9450545318">Enquire Now <ArrowRight className="ml-2 h-5 w-5"/></a>
                   </Button>
                    <Button asChild size="lg" variant="outline" className="font-headline bg-orange-600 text-white hover:bg-orange-700 shadow-lg px-8 py-6 text-base transition-transform duration-300 hover:-translate-y-1 hover:scale-105">
                     <Link href="/courses">View Courses</Link>
@@ -178,7 +178,7 @@ export default function Home() {
               </p>
               <div className="mt-10">
                   <Button asChild size="lg" className="w-full md:w-auto bg-orange-600 text-white hover:bg-orange-700 shadow-lg px-10 py-6 text-base font-bold rounded-lg">
-                      <Link href="tel:7905927527">Register Now <ArrowRight className="ml-2 h-4 w-4"/></Link>
+                      <Link href="tel:9450545318">Register Now <ArrowRight className="ml-2 h-4 w-4"/></Link>
                   </Button>
               </div>
           </div>
@@ -212,6 +212,83 @@ export default function Home() {
                       <Link href="/courses">View All Coaching Programs <ArrowRight className="ml-2 h-5 w-5"/></Link>
                   </Button>
               </div>
+          </div>
+        </section>
+
+        <section id="student-corner" className="w-full py-12 md:py-24 bg-gradient-to-r from-blue-50 to-cyan-50">
+          <div className="container mx-auto px-4 md:px-6">
+            <div className="text-center mb-12">
+              <div className="inline-block rounded-lg bg-primary/10 px-3 py-1 text-sm font-medium text-primary">Student Resources</div>
+              <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-5xl mt-2 text-gray-800">Student Corner</h2>
+              <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl mt-4">
+                Access study materials, test results, announcements, and everything you need for your preparation journey.
+              </p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+              <Card className="text-center p-6 bg-white shadow-sm hover:shadow-lg transition-shadow duration-300">
+                <div className="flex justify-center mb-4">
+                  <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                    <BookOpen className="h-6 w-6 text-blue-600" />
+                  </div>
+                </div>
+                <h3 className="font-headline text-lg font-bold mb-2">Study Materials</h3>
+                <p className="text-sm text-muted-foreground">Comprehensive notes and resources for all subjects</p>
+              </Card>
+              <Card className="text-center p-6 bg-white shadow-sm hover:shadow-lg transition-shadow duration-300">
+                <div className="flex justify-center mb-4">
+                  <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                    <Award className="h-6 w-6 text-green-600" />
+                  </div>
+                </div>
+                <h3 className="font-headline text-lg font-bold mb-2">Test Results</h3>
+                <p className="text-sm text-muted-foreground">Check your PST and mock test performance</p>
+              </Card>
+              <Card className="text-center p-6 bg-white shadow-sm hover:shadow-lg transition-shadow duration-300">
+                <div className="flex justify-center mb-4">
+                  <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                    <Target className="h-6 w-6 text-purple-600" />
+                  </div>
+                </div>
+                <h3 className="font-headline text-lg font-bold mb-2">Class Schedule</h3>
+                <p className="text-sm text-muted-foreground">View your timetable and class updates</p>
+              </Card>
+              <Card className="text-center p-6 bg-white shadow-sm hover:shadow-lg transition-shadow duration-300">
+                <div className="flex justify-center mb-4">
+                  <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                    <Users className="h-6 w-6 text-orange-600" />
+                  </div>
+                </div>
+                <h3 className="font-headline text-lg font-bold mb-2">Student Support</h3>
+                <p className="text-sm text-muted-foreground">Get help and support from our team</p>
+              </Card>
+            </div>
+            <div className="text-center">
+              <Button asChild size="lg" className="font-headline bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg">
+                <Link href="/student-corner">Access Student Corner <ArrowRight className="ml-2 h-5 w-5"/></Link>
+              </Button>
+            </div>
+          </div>
+        </section>
+
+        <section id="faculty-access" className="w-full py-12 md:py-24 bg-gradient-to-r from-purple-600 to-indigo-600 text-white">
+          <div className="container mx-auto px-4 md:px-6 text-center">
+            <div className="max-w-3xl mx-auto">
+              <h2 className="font-headline text-3xl md:text-4xl font-bold mb-4">Are You Faculty?</h2>
+              <p className="text-lg mb-8 opacity-90">
+                Access the advanced teacher dashboard to create mock tests, manage students, and track performance analytics.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <Button asChild size="lg" className="bg-white text-purple-600 hover:bg-gray-100 shadow-lg px-8 py-6 text-base font-bold">
+                  <Link href="/teacher-dashboard">
+                    <Users className="h-5 w-5 mr-2" />
+                    Click Here - Faculty Dashboard
+                  </Link>
+                </Button>
+                <div className="text-sm opacity-75">
+                  Create tests • Manage students • View analytics
+                </div>
+              </div>
+            </div>
           </div>
         </section>
 

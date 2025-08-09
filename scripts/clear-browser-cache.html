@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clear Browser Cache - Coaching App</title>
+    <link rel="stylesheet" href="cache-styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>🧹 Clear Browser Cache</h1>
+        <p class="center-text">
+            Use this tool to clear cached test data from your browser after database cleanup.
+        </p>
+
+        <div class="cache-section">
+            <h3>📊 Local Storage Keys</h3>
+            <div id="localStorageKeys" class="status">
+                Loading localStorage keys...
+            </div>
+            <button onclick="clearLocalStorage()">Clear All Local Storage</button>
+            <button onclick="clearTestData()">Clear Test Data Only</button>
+        </div>
+
+        <div class="cache-section">
+            <h3>🍪 Session Storage</h3>
+            <button onclick="clearSessionStorage()">Clear Session Storage</button>
+        </div>
+
+        <div class="cache-section">
+            <h3>🔄 Hard Refresh</h3>
+            <button onclick="hardRefresh()">Force Reload (Ctrl+F5)</button>
+            <button onclick="clearCacheAndReload()">Clear Cache & Reload</button>
+        </div>
+
+        <div class="cache-section">
+            <h3>📋 Cache Status</h3>
+            <div id="cacheStatus" class="status">
+                Checking cache...
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function updateLocalStorageDisplay() {
+            const keysDiv = document.getElementById('localStorageKeys');
+            const keys = Object.keys(localStorage);
+            
+            if (keys.length === 0) {
+                keysDiv.innerHTML = '<div class="info">✅ No localStorage data found</div>';
+                return;
+            }
+
+            let html = '<div class="monospace-small">';
+            keys.forEach(key => {
+                const value = localStorage.getItem(key);
+                const size = (value ? value.length : 0);
+                html += `<div>${key}: ${size} bytes</div>`;
+            });
+            html += '</div>';
+            keysDiv.innerHTML = html;
+        }
+
+        function updateCacheStatus() {
+            const statusDiv = document.getElementById('cacheStatus');
+            const lsKeys = Object.keys(localStorage).length;
+            const ssKeys = Object.keys(sessionStorage).length;
+            
+            statusDiv.innerHTML = `
+                <div class="info">
+                    📊 Local Storage: ${lsKeys} keys<br>
+                    📊 Session Storage: ${ssKeys} keys<br>
+                    🕒 Last Updated: ${new Date().toLocaleTimeString()}
+                </div>
+            `;
+        }
+
+        function clearLocalStorage() {
+            const count = Object.keys(localStorage).length;
+            localStorage.clear();
+            updateLocalStorageDisplay();
+            updateCacheStatus();
+            showStatus(`✅ Cleared ${count} localStorage items`, 'success');
+        }
+
+        function clearTestData() {
+            const testKeys = [
+                'tests', 'test_results', 'test_attempts', 'student_answers',
+                'current_test', 'test_progress', 'cached_tests', 'test_data',
+                'teacher_dashboard_data', 'recent_results', 'live_tests'
+            ];
+            
+            let cleared = 0;
+            testKeys.forEach(key => {
+                if (localStorage.getItem(key)) {
+                    localStorage.removeItem(key);
+                    cleared++;
+                }
+            });
+            
+            updateLocalStorageDisplay();
+            updateCacheStatus();
+            showStatus(`✅ Cleared ${cleared} test-related localStorage items`, 'success');
+        }
+
+        function clearSessionStorage() {
+            const count = Object.keys(sessionStorage).length;
+            sessionStorage.clear();
+            updateCacheStatus();
+            showStatus(`✅ Cleared ${count} sessionStorage items`, 'success');
+        }
+
+        function hardRefresh() {
+            showStatus('🔄 Performing hard refresh...', 'info');
+            setTimeout(() => {
+                location.reload(true);
+            }, 1000);
+        }
+
+        function clearCacheAndReload() {
+            showStatus('🔄 Clearing cache and reloading...', 'info');
+            
+            // Clear browser cache
+            if ('caches' in window) {
+                caches.keys().then(names => {
+                    names.forEach(name => caches.delete(name));
+                });
+            }
+            
+            // Clear storage
+            localStorage.clear();
+            sessionStorage.clear();
+            
+            setTimeout(() => {
+                location.reload(true);
+            }, 1500);
+        }
+
+        function showStatus(message, type) {
+            const statusDiv = document.createElement('div');
+            statusDiv.className = `status ${type}`;
+            statusDiv.textContent = message;
+            document.body.appendChild(statusDiv);
+            
+            setTimeout(() => {
+                statusDiv.remove();
+            }, 3000);
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            updateLocalStorageDisplay();
+            updateCacheStatus();
+        });
+
+        // Auto-refresh status every 5 seconds
+        setInterval(updateCacheStatus, 5000);
+    </script>
+</body>
+</html>

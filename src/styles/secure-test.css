@@ -1,0 +1,62 @@
+/* Secure Test Environment Styles */
+
+/* Background and selection prevention */
+.bg-black {
+  background-color: #000;
+}
+
+.select-none {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.no-select {
+  -webkit-touch-callout: none;
+  touch-action: none;
+  cursor: default;
+}
+
+/* Secure test container */
+.secure-test-container {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  overflow: hidden;
+}
+
+/* Mobile safe area padding */
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* Responsive utilities */
+@media (max-width: 768px) {
+  .pb-safe {
+    padding-bottom: 20px;
+  }
+}
+
+/* Dark mode overrides for secure environment */
+.dark .secure-test-container {
+  background-color: #000;
+}
+
+/* Ensure consistent styling across browsers */
+.secure-test-container * {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Prevent text selection in secure mode */
+.secure-test-container p,
+.secure-test-container h1,
+.secure-test-container h2,
+.secure-test-container h3,
+.secure-test-container span,
+.secure-test-container div {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}

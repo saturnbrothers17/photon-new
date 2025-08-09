@@ -1,0 +1,89 @@
+.viewerContainer {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.pdfViewer {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  pointer-events: auto;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.pdfOverlay {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 48px;
+  height: 48px;
+  background-color: transparent;
+  pointer-events: auto;
+  z-index: 10;
+}
+
+.imageViewer {
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  pointer-events: none;
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.videoViewer {
+  width: 100%;
+  height: auto;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.fullscreen {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fullscreenVideo {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Used inside the fullscreen portal overlay */
+.portalContainer {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+}
+
+.portalVideo {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
