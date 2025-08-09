@@ -1,8 +1,8 @@
 node_modules
-node_modules
 
 # Local Environment Variables
 .env*.local
+.env.local.backup
 
 # Next.js
 /.next/
@@ -10,6 +10,14 @@ node_modules
 
 # Production
 /build
+
+# Secrets and Credentials
+*.json
+!package.json
+!package-lock.json
+!tsconfig.json
+!next.config.js
+!next-env.d.ts
 
 # Other
 .DS_Store
