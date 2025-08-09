@@ -1,18 +1,23 @@
-import { getAllTests, getTestById } from '@/lib/test-data';
+import { getAllTests, getTestById, TestData } from '@/lib/test-data';
 import TestDetails from './test-details';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 
 export async function generateStaticParams() {
-  const tests = getAllTests();
-  return tests.map((test) => ({
+  const tests = await getAllTests();
+  return tests.map((test: TestData) => ({
     testId: test.id.toString(),
   }));
 }
 
-export default function TestDetailsPage({ params }: { params: { testId: string } }) {
-  const testId = Number(params.testId);
-  const test = getTestById(testId);
+interface PageProps {
+  params: Promise<{ testId: string }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}
+
+export default async function TestDetailsPage({ params }: PageProps) {
+  const { testId } = await params;
+  const test = await getTestById(testId);
 
   if (!test) {
     return (
