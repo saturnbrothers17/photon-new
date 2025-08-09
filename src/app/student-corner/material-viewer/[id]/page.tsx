@@ -9,6 +9,7 @@ import {
   Shield, Eye, AlertTriangle, ArrowLeft, ZoomIn, ZoomOut, 
   RotateCw, Download, Share, Copy, FileText
 } from 'lucide-react';
+import styles from './styles.module.css';
 
 interface StudyMaterial {
   id: string;
@@ -423,12 +424,11 @@ export default function SecureMaterialViewer() {
               {/* PDF Viewer Container */}
               <div 
                 ref={viewerRef}
-                className="secure-content bg-white rounded-lg p-4 min-h-96 relative overflow-hidden"
+                className={`secure-content bg-white rounded-lg p-4 min-h-96 relative overflow-hidden ${styles.viewerContent}`}
                 style={{
-                  transform: `scale(${zoom / 100}) rotate(${rotation}deg)`,
-                  transformOrigin: 'center center',
-                  transition: 'transform 0.3s ease'
-                }}
+                  '--zoom-scale': zoom / 100,
+                  '--rotation-deg': `${rotation}deg`,
+                } as React.CSSProperties}
               >
                 {/* Watermark */}
                 <div className="absolute inset-0 pointer-events-none z-10">
