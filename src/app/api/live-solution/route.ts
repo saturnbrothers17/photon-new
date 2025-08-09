@@ -20,7 +20,8 @@ export async function POST(request: NextRequest) {
         questionId: question.question.id
       });
     } catch (error) {
-      console.log(`🔄 Using fallback for question ${question.question.id}:`, error.message);
+      const errMsg = error instanceof Error ? error.message : String(error);
+      console.log(`🔄 Using fallback for question ${question.question.id}:`, errMsg);
       
       // Generate detailed fallback
       const fallbackSolution = generateDetailedFallback(question);
