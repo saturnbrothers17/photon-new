@@ -10,7 +10,7 @@ export async function GET() {
     const folderId = await googleDriveServiceAccount.ensureTestFolder();
     
     // Test file listing
-    const files = await googleDriveServiceAccount.listFiles(folderId);
+    const files = await googleDriveServiceAccount.listTests();
     
     return NextResponse.json({
       success: true,
