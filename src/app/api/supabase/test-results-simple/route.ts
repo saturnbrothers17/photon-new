@@ -49,7 +49,7 @@ async function saveTestResult(body: any) {
     const percentage = maxMarks > 0 ? (score / maxMarks) * 100 : 0;
 
     // Create result data with existing columns only
-    const resultData = {
+    const resultData: any = {
       id: crypto.randomUUID(),
       test_id: testId,
       student_id: studentId,
