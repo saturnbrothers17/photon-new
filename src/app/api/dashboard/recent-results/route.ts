@@ -49,9 +49,9 @@ export async function GET() {
     const recentResults = results?.map(result => ({
       id: result.id,
       student_id: result.student_id,
-      test_name: result.tests?.title || 'Unknown Test',
-      subject: result.tests?.subject || 'Unknown',
-      class_level: result.tests?.class_level || 'Unknown',
+      test_name: Array.isArray(result.tests) ? result.tests[0]?.title || 'Unknown Test' : result.tests?.title || 'Unknown Test',
+      subject: Array.isArray(result.tests) ? result.tests[0]?.subject || 'Unknown' : result.tests?.subject || 'Unknown',
+      class_level: Array.isArray(result.tests) ? result.tests[0]?.class_level || 'Unknown' : result.tests?.class_level || 'Unknown',
       score: result.score,
       max_marks: result.max_marks,
       percentage: result.percentage,
