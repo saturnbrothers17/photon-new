@@ -43,7 +43,7 @@ async function saveTestResult(body: any) {
     console.log('💾 Saving test result:', testResult);
 
     // Insert test result with only existing columns
-    const resultData = {
+    const resultData: any = {
       id: testResult.id || crypto.randomUUID(),
       test_id: testResult.testId,
       student_id: testResult.studentId,
