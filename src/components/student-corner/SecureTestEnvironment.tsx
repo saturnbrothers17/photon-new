@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef, useCallback, type ReactNode } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
@@ -13,13 +13,15 @@ interface SecureTestEnvironmentProps {
   questions: any[];
   onTestSubmit: (answers: any, flags: any, timeTaken: number) => void;
   onExitSecureMode: () => void;
+  children?: ReactNode;
 }
 
 export default function SecureTestEnvironment({ 
   testData, 
   questions, 
   onTestSubmit, 
-  onExitSecureMode 
+  onExitSecureMode,
+  children,
 }: SecureTestEnvironmentProps) {
   // Test state
   const [currentQuestion, setCurrentQuestion] = useState(0);
