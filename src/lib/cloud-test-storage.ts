@@ -1,4 +1,4 @@
-import { GoogleDriveAutoSync } from './google-drive-auto-sync';
+import { GoogleDriveAutoSync } from '../hooks/useGoogleDriveAutoSync';
 
 // Cloud-based test storage system for cross-device access
 export class CloudTestStorage {
