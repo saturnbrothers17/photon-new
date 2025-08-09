@@ -1,5 +1,5 @@
 // Test data management utilities
-// This module provides compatibility for legacy test data operations
+import { supabase } from './supabase-server';
 
 export interface TestData {
   id: string;
@@ -21,41 +21,47 @@ export interface Question {
   marks: number;
 }
 
-// Legacy compatibility functions
+// Server-side data fetching
 export const getTestById = async (testId: string): Promise<TestData | null> => {
   try {
-    // Redirect to Supabase API
-    const response = await fetch(`/api/supabase/tests?action=get-by-id&testId=${testId}`);
-    const result = await response.json();
-    return result.success ? result.data : null;
+    const { data, error } = await supabase
+      .from('tests')
+      .select('*')
+      .eq('id', testId)
+      .single();
+    if (error) {
+      console.error('Error fetching test by ID:', error.message);
+      return null;
+    }
+    return data as TestData | null;
   } catch (error) {
-    console.error('Error fetching test:', error);
+    console.error('Error in getTestById:', error);
     return null;
   }
 };
 
 export const getAllTests = async (): Promise<TestData[]> => {
   try {
-    // Redirect to Supabase API
-    const response = await fetch('/api/supabase/tests?action=get-all');
-    const result = await response.json();
-    return result.success ? result.data : [];
+    const { data, error } = await supabase.from('tests').select('*');
+    if (error) {
+      console.error('Error fetching all tests:', error.message);
+      return [];
+    }
+    return (data as TestData[]) || [];
   } catch (error) {
-    console.error('Error fetching tests:', error);
+    console.error('Error in getAllTests:', error);
     return [];
   }
 };
 
 export const saveTest = async (testData: Partial<TestData>): Promise<boolean> => {
   try {
-    // Redirect to Supabase API
-    const response = await fetch('/api/supabase/tests', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action: 'create', testData })
-    });
-    const result = await response.json();
-    return result.success;
+    const { error } = await supabase.from('tests').insert([testData]);
+    if (error) {
+      console.error('Error saving test:', error.message);
+      return false;
+    }
+    return true;
   } catch (error) {
     console.error('Error saving test:', error);
     return false;
@@ -64,14 +70,15 @@ export const saveTest = async (testData: Partial<TestData>): Promise<boolean> =>
 
 export const updateTest = async (testId: string, testData: Partial<TestData>): Promise<boolean> => {
   try {
-    // Redirect to Supabase API
-    const response = await fetch('/api/supabase/tests', {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action: 'update', testId, testData })
-    });
-    const result = await response.json();
-    return result.success;
+    const { error } = await supabase
+      .from('tests')
+      .update(testData)
+      .eq('id', testId);
+    if (error) {
+      console.error('Error updating test:', error.message);
+      return false;
+    }
+    return true;
   } catch (error) {
     console.error('Error updating test:', error);
     return false;
@@ -80,14 +87,12 @@ export const updateTest = async (testId: string, testData: Partial<TestData>): P
 
 export const deleteTest = async (testId: string): Promise<boolean> => {
   try {
-    // Redirect to Supabase API
-    const response = await fetch('/api/supabase/tests', {
-      method: 'DELETE',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action: 'delete', testId })
-    });
-    const result = await response.json();
-    return result.success;
+    const { error } = await supabase.from('tests').delete().eq('id', testId);
+    if (error) {
+      console.error('Error deleting test:', error.message);
+      return false;
+    }
+    return true;
   } catch (error) {
     console.error('Error deleting test:', error);
     return false;
