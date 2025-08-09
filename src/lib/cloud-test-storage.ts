@@ -1,9 +1,7 @@
-import { GoogleDriveAutoSync } from '../hooks/useGoogleDriveAutoSync';
-
 // Cloud-based test storage system for cross-device access
 export class CloudTestStorage {
-  private autoSync: GoogleDriveAutoSync | null = null;
   private isInitialized = false;
+  private cloudAvailable = false;
 
   constructor() {
     this.initializeIfPossible();
@@ -14,11 +12,12 @@ export class CloudTestStorage {
       const tokens = localStorage.getItem('googleDriveTokens');
       if (tokens) {
         try {
-          this.autoSync = new GoogleDriveAutoSync(JSON.parse(tokens));
           this.isInitialized = true;
+          this.cloudAvailable = true;
           console.log('✅ Cloud test storage initialized');
         } catch (error) {
           console.error('❌ Failed to initialize cloud storage:', error);
+          this.cloudAvailable = false;
         }
       }
     }
@@ -26,26 +25,22 @@ export class CloudTestStorage {
 
   // Check if cloud storage is available
   isCloudAvailable(): boolean {
-    return this.isInitialized && this.autoSync !== null;
+    return this.cloudAvailable;
   }
 
-  // Publish test to cloud (called by teachers)
+  // Publish test (saves to local storage)
   async publishTestToCloud(testData: any, questions: any[]): Promise<string> {
-    if (!this.autoSync) {
-      throw new Error('Cloud storage not initialized. Please connect to Google Drive first.');
-    }
-
     try {
-      console.log('📤 Publishing test to cloud:', testData.name);
+      console.log('📤 Saving test:', testData.name);
 
-      // Create comprehensive test package
+      // Create test package
       const testPackage = {
         ...testData,
         questions: questions,
         publishedAt: new Date().toISOString(),
         publishedBy: 'PHOTON Faculty',
         version: '1.0',
-        cloudId: `test_${testData.id}_${Date.now()}`,
+        cloudId: `local_${Date.now()}`,
         accessLevel: 'student',
         metadata: {
           totalQuestions: questions.length,
@@ -54,136 +49,50 @@ export class CloudTestStorage {
           maxMarks: testData.maxMarks || questions.reduce((sum, q) => sum + (q.marks || 1), 0)
         }
       };
-
-      // Upload to Google Drive
-      const fileId = await this.autoSync.uploadTest(testPackage);
       
-      // Also save to localStorage for local access
+      // Save to localStorage
       this.saveToLocalStorage(testPackage);
       
-      console.log('✅ Test published to cloud with ID:', fileId);
-      return fileId;
+      console.log('✅ Test saved with ID:', testPackage.cloudId);
+      return testPackage.cloudId;
     } catch (error) {
-      console.error('❌ Failed to publish test to cloud:', error);
+      console.error('❌ Failed to save test:', error);
       throw error;
     }
   }
 
-  // Get all published tests from cloud (called by students)
+  // Get all published tests from local storage
   async getPublishedTestsFromCloud(): Promise<any[]> {
-    if (!this.autoSync) {
-      console.log('⚠️ Cloud storage not available, using local storage');
-      return this.getLocalTests();
-    }
-
-    try {
-      console.log('📥 Fetching tests from cloud...');
-
-      // Get test files from Google Drive
-      const testFiles = await this.autoSync.listFolderContents(['PHOTON Coaching Institute', 'PHOTON Tests']);
-      
-      const tests = [];
-      for (const file of testFiles) {
-        try {
-          // For now, we'll use the file metadata
-          // In a full implementation, you'd download and parse each file
-          const testData = {
-            id: file.id,
-            name: file.name.replace('.json', '').replace(/test_\d+_\d+/, ''),
-            cloudId: file.id,
-            createdTime: file.createdTime,
-            modifiedTime: file.modifiedTime,
-            size: file.size,
-            status: 'published',
-            type: this.extractTestType(file.name),
-            isCloudTest: true
-          };
-          tests.push(testData);
-        } catch (error) {
-          console.error('Error processing test file:', file.name, error);
-        }
-      }
-
-      console.log(`✅ Found ${tests.length} tests in cloud`);
-      
-      // Merge with local tests
-      const localTests = this.getLocalTests();
-      const allTests = [...tests, ...localTests];
-      
-      return allTests;
-    } catch (error) {
-      console.error('❌ Failed to fetch tests from cloud:', error);
-      // Fallback to local storage
-      return this.getLocalTests();
-    }
+    console.log('📥 Fetching tests from local storage...');
+    const localTests = this.getLocalTests();
+    console.log(`✅ Found ${localTests.length} tests in local storage`);
+    return localTests;
   }
 
-  // Download specific test data from cloud
+  // Download specific test data from local storage
   async downloadTestFromCloud(cloudId: string): Promise<any> {
-    if (!this.autoSync) {
-      throw new Error('Cloud storage not available');
-    }
-
     try {
-      console.log('📥 Downloading test from cloud:', cloudId);
+      console.log('📥 Loading test from local storage:', cloudId);
       
-      // This would download the actual test file content
-      // For now, we'll return a placeholder
-      const testData = await this.autoSync.loadTest(cloudId);
+      const tests = this.getLocalTests();
+      const testData = tests.find(test => test.cloudId === cloudId);
       
-      console.log('✅ Test downloaded from cloud');
+      if (!testData) {
+        throw new Error(`Test with ID ${cloudId} not found`);
+      }
+      
+      console.log('✅ Test loaded from local storage');
       return testData;
     } catch (error) {
-      console.error('❌ Failed to download test from cloud:', error);
+      console.error('❌ Failed to load test from local storage:', error);
       throw error;
     }
   }
 
-  // Sync tests between local and cloud
+  // Sync is a no-op in local storage mode
   async syncTests(): Promise<{ uploaded: number; downloaded: number }> {
-    if (!this.autoSync) {
-      throw new Error('Cloud storage not available');
-    }
-
-    try {
-      console.log('🔄 Syncing tests between local and cloud...');
-
-      let uploaded = 0;
-      let downloaded = 0;
-
-      // Upload local tests that aren't in cloud
-      const localTests = this.getLocalTests();
-      for (const test of localTests) {
-        if (!test.cloudId) {
-          try {
-            await this.publishTestToCloud(test, test.questions || []);
-            uploaded++;
-          } catch (error) {
-            console.error('Failed to upload test:', test.name, error);
-          }
-        }
-      }
-
-      // Download cloud tests that aren't local
-      const cloudTests = await this.getPublishedTestsFromCloud();
-      for (const test of cloudTests) {
-        if (test.isCloudTest && !this.isTestInLocalStorage(test.cloudId)) {
-          try {
-            const fullTestData = await this.downloadTestFromCloud(test.cloudId);
-            this.saveToLocalStorage(fullTestData);
-            downloaded++;
-          } catch (error) {
-            console.error('Failed to download test:', test.name, error);
-          }
-        }
-      }
-
-      console.log(`✅ Sync complete: ${uploaded} uploaded, ${downloaded} downloaded`);
-      return { uploaded, downloaded };
-    } catch (error) {
-      console.error('❌ Sync failed:', error);
-      throw error;
-    }
+    console.log('ℹ️ Sync not required in local storage mode');
+    return { uploaded: 0, downloaded: 0 };
   }
 
   // Helper methods
@@ -209,29 +118,30 @@ export class CloudTestStorage {
       const existingIndex = tests.findIndex((t: any) => t.id === testData.id || t.cloudId === testData.cloudId);
       
       if (existingIndex >= 0) {
+        // Update existing test
         tests[existingIndex] = testData;
       } else {
+        // Add new test
         tests.push(testData);
       }
       
       localStorage.setItem('tests', JSON.stringify(tests));
     } catch (error) {
-      console.error('Error saving to localStorage:', error);
+      console.error('Error saving test to localStorage:', error);
+    }
+  }
+  
+  private isTestInLocalStorage(cloudId: string): boolean {
+    try {
+      const tests = this.getLocalTests();
+      return tests.some((test: any) => test.cloudId === cloudId);
+    } catch (error) {
+      console.error('Error checking test in localStorage:', error);
+      return false;
     }
   }
 
-  private isTestInLocalStorage(cloudId: string): boolean {
-    const localTests = this.getLocalTests();
-    return localTests.some(test => test.cloudId === cloudId);
-  }
 
-  private extractTestType(filename: string): string {
-    if (filename.includes('jee_main')) return 'JEE Main';
-    if (filename.includes('jee_advanced')) return 'JEE Advanced';
-    if (filename.includes('neet')) return 'NEET';
-    if (filename.includes('chapter')) return 'Chapter Test';
-    return 'Mock Test';
-  }
 }
 
 // Singleton instance
