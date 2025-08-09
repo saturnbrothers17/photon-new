@@ -56,7 +56,7 @@ export function PerformanceWrapper({ children }: { children: React.ReactNode }) 
 
 // Lazy load heavy components
 export const LazyStudyMaterialsViewer = dynamic(
-  () => import('@/components/student-corner/StudyMaterialsViewer'),
+  () => import('@/components/student-corner/StudyMaterialsViewer').then(m => m.StudyMaterialsViewer),
   { 
     loading: () => <div className="animate-pulse bg-gray-200 h-96 rounded-lg" />,
     ssr: false 
@@ -64,7 +64,7 @@ export const LazyStudyMaterialsViewer = dynamic(
 );
 
 export const LazyPowerfulQuestionExtractor = dynamic(
-  () => import('@/components/teacher-dashboard/PowerfulQuestionExtractor'),
+  () => import('@/components/teacher-dashboard/PowerfulQuestionExtractor').then(m => m.default),
   { 
     loading: () => <div className="animate-pulse bg-gray-200 h-96 rounded-lg" />,
     ssr: false 

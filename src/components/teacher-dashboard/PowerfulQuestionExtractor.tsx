@@ -191,7 +191,7 @@ export default function PowerfulQuestionExtractor({
         duration_minutes: 180,
         total_marks: extractedQuestions.length * 4,
         passing_marks: Math.floor(extractedQuestions.length * 4 * 0.4),
-        is_published: false, // Save as draft initially
+        published: false, // Save as draft initially
         questions: extractedQuestions.map(q => ({
           question_text: q.question || '',
           question_type: 'multiple_choice',
@@ -411,9 +411,11 @@ export default function PowerfulQuestionExtractor({
               </Badge>
             </CardTitle>
             <div className="flex gap-4 text-sm text-green-700">
-              <span>⚡ {extractionResult.processingTime}ms</span>
-              <span>🎯 {Math.round(extractionResult.successRate)}% accuracy</span>
-              <span>📊 {extractionResult.totalFound} total found</span>
+              <span>📦 Source: {extractionResult.source}</span>
+              <span>📊 Questions: {extractedQuestions.length}</span>
+              {Array.isArray(extractionResult.debugLogs) && (
+                <span>🪵 Logs: {extractionResult.debugLogs.length}</span>
+              )}
             </div>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -424,10 +426,7 @@ export default function PowerfulQuestionExtractor({
                   <div className="flex items-start justify-between mb-2">
                     <h4 className="font-medium text-gray-800">Question {index + 1}</h4>
                     <div className="flex gap-2">
-                      {getMethodBadge(question.extractionMethod || 'AI')}
-                      <Badge variant="outline" className="text-xs">
-                        {question.confidence || 95}% confidence
-                      </Badge>
+                      {getMethodBadge('AI')}
                     </div>
                   </div>
                   <p className="text-sm text-gray-700 mb-2">{question.question || ''}</p>

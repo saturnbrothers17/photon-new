@@ -20,7 +20,7 @@ export default function AnalyticsChart({ test }: AnalyticsChartProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Score Distribution - {test.name}</CardTitle>
+        <CardTitle>Score Distribution - {test.title}</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="w-full h-[400px]">

@@ -79,6 +79,7 @@ interface TestResult {
   attemptedQuestions: AttemptedQuestion[];
   subjectPerformance: SubjectPerformance[];
   submittedAt: string;
+  aiEnhanced?: boolean;
 }
 
 export default function TestAnalysisPage() {

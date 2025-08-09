@@ -144,7 +144,7 @@ export default function CreateTest() {
         duration_minutes: testData.duration,
         total_marks: testData.totalMarks,
         passing_marks: Math.floor(testData.totalMarks * 0.4), // 40% passing marks
-        is_published: true, // Always publish when creating
+        published: true, // Always publish when creating
         questions: questions.map(q => ({
           question_text: q.question,
           question_type: 'multiple_choice',

@@ -27,7 +27,7 @@ import Link from 'next/link';
 import QuestionSolver from '@/components/student-corner/QuestionSolver';
 
 interface TestResult {
-  testId: number;
+  testId: string;
   testName: string;
   totalQuestions: number;
   correctAnswers: number;
@@ -343,7 +343,7 @@ export default function TestAnalysis() {
 
           {/* AI Solver Tab */}
           <TabsContent value="solver" className="space-y-6">
-            <QuestionSolver questions={testResult.attemptedQuestions} />
+            <QuestionSolver />
           </TabsContent>
 
           {/* Deep Analysis Tab */}

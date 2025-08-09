@@ -2,31 +2,27 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Test, updateTest } from '@/lib/test-data';
+import { TestData, updateTest } from '@/lib/test-data';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 interface EditTestFormProps {
-  test: Test;
+  test: TestData;
 }
 
 export default function EditTestForm({ test }: EditTestFormProps) {
   const router = useRouter();
-  const [name, setName] = useState(test.name);
-  const [status, setStatus] = useState(test.status);
-  const [instructions, setInstructions] = useState(test.instructions);
+  const [name, setName] = useState(test.title);
   const [isSaving, setIsSaving] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setIsSaving(true);
     try {
-      const updatedTest: Test = { ...test, name, status, instructions };
-      updateTest(updatedTest);
+      // Update only supported fields in TestData via lib/test-data API
+      updateTest(test.id, { title: name });
       alert('Test updated successfully!');
       router.push('/teacher-dashboard');
     } catch (error) {
@@ -40,30 +36,13 @@ export default function EditTestForm({ test }: EditTestFormProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Edit Test: {test.name}</CardTitle>
+        <CardTitle>Edit Test: {test.title}</CardTitle>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-2">
             <Label htmlFor="name">Test Name</Label>
             <Input id="name" value={name} onChange={(e) => setName(e.target.value)} required />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="status">Status</Label>
-            <Select value={status} onValueChange={(value) => setStatus(value as "draft" | "published" | "scheduled" | "archived" | "live")}>
-              <SelectTrigger id="status">
-                <SelectValue placeholder="Select status" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="draft">Draft</SelectItem>
-                <SelectItem value="published">Published</SelectItem>
-                <SelectItem value="archived">Archived</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="instructions">Instructions</Label>
-            <Textarea id="instructions" value={instructions} onChange={(e) => setInstructions(e.target.value)} rows={5} />
           </div>
           <div className="flex justify-end gap-4">
             <Button type="button" variant="outline" onClick={() => router.back()}>

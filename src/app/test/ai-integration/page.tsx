@@ -29,18 +29,12 @@ export default function AIIntegrationTest() {
     setDebugLogs([]);
 
     try {
-      const extractor = new PowerfulQuestionExtractor({
-        qwenApiKey: process.env.NEXT_PUBLIC_QWEN_API_KEY,
-        geminiApiKey: process.env.NEXT_PUBLIC_GEMINI_API_KEY,
-        debug: true
-      });
-
+      const extractor = new PowerfulQuestionExtractor();
       const result = await extractor.extractQuestions(selectedFile);
       setExtractionResult(result);
-      
-      // Capture debug logs
-      if (result.debugInfo?.debugLogs) {
-        setDebugLogs(result.debugInfo.debugLogs);
+      // Capture debug logs if available
+      if (result.debugLogs && result.debugLogs.length) {
+        setDebugLogs(result.debugLogs);
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Extraction failed');
@@ -126,9 +120,7 @@ export default function AIIntegrationTest() {
                 <h4 className="font-semibold mb-2">Summary</h4>
                 <div className="grid grid-cols-2 gap-4 text-sm">
                   <div>Questions Found: {extractionResult.questions?.length || 0}</div>
-                  <div>Confidence: {extractionResult.confidence?.toFixed(1) || 0}%</div>
-                  <div>Extraction Time: {extractionResult.extractionTime?.toFixed(0) || 0}ms</div>
-                  <div>Methods Used: {extractionResult.methodsUsed?.join(', ') || 'None'}</div>
+                  <div>Source: {extractionResult.source}</div>
                 </div>
               </div>
 
@@ -138,11 +130,10 @@ export default function AIIntegrationTest() {
                   {extractionResult.questions.map((q: any, index: number) => (
                     <div key={index} className="border rounded-lg p-4">
                       <div className="font-semibold mb-2">Question {index + 1}</div>
-                      <div className="mb-2">{q.question}</div>
+                      <div className="mb-2">{q.question_text}</div>
                       <div className="text-sm text-gray-600">
-                        <div>Options: {q.options?.join(', ')}</div>
-                        <div>Correct: {q.correctAnswer}</div>
-                        <div>Confidence: {q.confidence}%</div>
+                        <div>Options: {Array.isArray(q.choices) ? q.choices.map((c: any) => c.text).join(', ') : ''}</div>
+                        <div>Correct: {q.correct_answer}</div>
                       </div>
                     </div>
                   ))}

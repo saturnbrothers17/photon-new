@@ -20,8 +20,9 @@ export default function AuthDebug() {
       const response = await fetch('/api/test-auth');
       const result = await response.json();
       setAuthResult(result);
-    } catch (error) {
-      setAuthResult({ success: false, error: error.message });
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : String(error);
+      setAuthResult({ success: false, error: message });
     } finally {
       setLoading(false);
     }
@@ -38,7 +39,7 @@ export default function AuthDebug() {
         duration_minutes: 60,
         total_marks: 100,
         passing_marks: 40,
-        is_published: false,
+        published: false,
         questions: [
           {
             question_text: 'What is 2+2?',
@@ -59,8 +60,9 @@ export default function AuthDebug() {
 
       const result = await response.json();
       setAuthResult(result);
-    } catch (error) {
-      setAuthResult({ success: false, error: error.message });
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : String(error);
+      setAuthResult({ success: false, error: message });
     } finally {
       setLoading(false);
     }

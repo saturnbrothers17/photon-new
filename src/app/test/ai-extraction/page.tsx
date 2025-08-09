@@ -32,7 +32,7 @@ export default function AIExtractionTestPage() {
     setResult(null);
 
     try {
-      const extractor = new PowerfulQuestionExtractor(true); // Enable debug logging
+      const extractor = new PowerfulQuestionExtractor();
       const extractionResult = await extractor.extractQuestions(file);
       setResult(extractionResult);
       if (extractionResult.error) {
@@ -92,7 +92,7 @@ export default function AIExtractionTestPage() {
                 Extraction Complete
               </CardTitle>
               <CardDescription>
-                Source: {result.source} | Confidence: {result.confidence?.toFixed(2) ?? 'N/A'}
+                Source: {result.source}
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -109,16 +109,16 @@ export default function AIExtractionTestPage() {
                           </li>
                         ))}
                       </ul>
-                      {q.explanation && <p className="text-sm mt-2 text-gray-600"><b>Explanation:</b> {q.explanation}</p>}
+                      {/* Explanation not provided by extractor types */}
                     </div>
                   ))}
                 </div>
               ) : (
                 <p>No questions were extracted from the image.</p>
               )}
-              <h3 className="font-bold mt-6 mb-2">Raw Output</h3>
+              <h3 className="font-bold mt-6 mb-2">Debug Logs</h3>
               <pre className="bg-gray-900 text-white p-4 rounded-lg text-xs overflow-x-auto">
-                <code>{result.raw_text || 'No raw text available.'}</code>
+                <code>{(result.debugLogs && result.debugLogs.length > 0) ? result.debugLogs.join('\n') : 'No debug logs available.'}</code>
               </pre>
             </CardContent>
           </Card>

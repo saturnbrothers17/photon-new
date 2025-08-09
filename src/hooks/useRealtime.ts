@@ -33,24 +33,24 @@ export const useRealtime = <T>(
 
 export const useRealtimeTests = (
   callback: (payload: {
-    event: 'INSERT' | 'UPDATE' | 'DELETE';
-    new: Database['public']['Tables']['tests']['Row'];
-    old: Database['public']['Tables']['tests']['Row'];
+    event: EventType;
+    new: any;
+    old: any;
   }) => void,
   filter: string = ''
 ) => {
-  return useRealtime<Database['public']['Tables']['tests']['Row']>('tests', '*', filter, callback);
+  return useRealtime<any>('tests', '*', filter, callback);
 };
 
 export const useRealtimeStudyMaterials = (
   callback: (payload: {
-    event: 'INSERT' | 'UPDATE' | 'DELETE';
-    new: Database['public']['Tables']['study_materials']['Row'];
-    old: Database['public']['Tables']['study_materials']['Row'];
+    event: EventType;
+    new: any;
+    old: any;
   }) => void,
   filter: string = ''
 ) => {
-  return useRealtime<Database['public']['Tables']['study_materials']['Row']>(
+  return useRealtime<any>(
     'study_materials',
     '*',
     filter,

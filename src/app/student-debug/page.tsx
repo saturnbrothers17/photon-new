@@ -20,9 +20,10 @@ export default function StudentDebugPage() {
       const response = await fetch('/api/debug/tests');
       const result = await response.json();
       setDebugData(result);
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('Error fetching debug data:', error);
-      setDebugData({ success: false, error: error.message });
+      const message = error instanceof Error ? error.message : String(error);
+      setDebugData({ success: false, error: message });
     } finally {
       setLoading(false);
     }
@@ -35,9 +36,10 @@ export default function StudentDebugPage() {
       const result = await response.json();
       console.log('Published tests API result:', result);
       alert(`Published tests API: ${result.success ? 'Success' : 'Failed'}\nTests found: ${result.data?.length || 0}`);
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('Error testing published API:', error);
-      alert(`Error: ${error.message}`);
+      const message = error instanceof Error ? error.message : String(error);
+      alert(`Error: ${message}`);
     } finally {
       setLoading(false);
     }
