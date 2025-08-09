@@ -19,7 +19,8 @@ export async function POST(request: NextRequest) {
         solutions.push(solution);
         aiSuccessCount++;
       } catch (error) {
-        console.log(`🔄 Using fallback solution for question ${question.question.id}:`, error.message);
+        const errorMessage = error instanceof Error ? error.message : String(error);
+        console.log(`🔄 Using fallback solution for question ${question.question.id}:`, errorMessage);
         // Always provide detailed fallback solution
         const fallbackSolution = generateFallbackSolution(question);
         solutions.push(fallbackSolution);
