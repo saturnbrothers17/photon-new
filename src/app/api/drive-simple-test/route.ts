@@ -4,10 +4,10 @@ import { NextResponse } from 'next/server';
 export async function GET() {
   try {
     // Test authentication
-    const auth = await googleDriveServiceAccount.getAuth();
+    const auth = await googleDriveServiceAccount.testAuth();
     
     // Test folder creation/retrieval
-    const folderId = await googleDriveServiceAccount.getOrCreateFolder('CoachingInstituteTests');
+    const folderId = await googleDriveServiceAccount.ensureTestFolder();
     
     // Test file listing
     const files = await googleDriveServiceAccount.listFiles(folderId);
