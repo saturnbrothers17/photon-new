@@ -10,7 +10,12 @@ export async function generateStaticParams() {
   }));
 }
 
-export default async function TestAnalyticsPage({ params }: { params: { testId: string } }) {
+interface PageProps {
+  params: { testId: string };
+  searchParams: { [key: string]: string | string[] | undefined };
+}
+
+export default async function TestAnalyticsPage({ params }: PageProps) {
   const { testId } = params;
   const test = await getTestById(testId);
 
