@@ -1,18 +1,26 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  transpilePackages: ['@supabase/realtime-js'],
+  output: 'standalone',
+  transpilePackages: [
+    '@supabase/realtime-js',
+    '@radix-ui/react-icons',
+    'lucide-react',
+    'framer-motion'
+  ],
   
   // Optimize images
   images: {
     formats: ['image/avif', 'image/webp'],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    domains: ['localhost', 'photon-website.vercel.app'],
   },
   
-  // Experimental features for better performance
+  // Enable experimental features
   experimental: {
-    optimizeCss: true, // Enable CSS optimization
+    optimizeCss: true,
+    serverComponentsExternalPackages: ['@supabase/supabase-js'],
     optimizePackageImports: [
       '@radix-ui/react-icons',
       'lucide-react',
@@ -24,7 +32,7 @@ const nextConfig = {
     ],
   },
   
-  // Compiler options for faster builds
+  // Compiler options
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
   },
@@ -37,9 +45,19 @@ const nextConfig = {
   },
   
   // Webpack optimizations
-  webpack: (config, { isServer }) => {
-    // Optimize bundle splitting
+  webpack: (config, { isServer, dev }) => {
+    // Add polyfills for Node.js modules
     if (!isServer) {
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        fs: false,
+        net: false,
+        tls: false,
+      };
+    }
+
+    // Optimize bundle splitting
+    if (!isServer && !dev) {
       config.optimization.splitChunks = {
         chunks: 'all',
         cacheGroups: {

@@ -1,0 +1,38 @@
+# Dependency directories
+node_modules/
+.next/
+
+# Build files
+out/
+dist/
+
+# Environment files
+.env*.local
+
+# Debug logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Local development files
+.vercel
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Test files
+__tests__/
+*.test.js
+*.spec.js
+
+# Cache
+.cache/
+.turbo/
+
+# Misc
+.DS_Store
+*.pem
