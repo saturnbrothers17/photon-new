@@ -385,7 +385,8 @@ export class SeamlessCloudStorage {
         status: 'Always Connected'
       };
     } catch (error) {
-      return { connected: false, error: error.message };
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      return { connected: false, error: errorMessage };
     }
   }
 }
