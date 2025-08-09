@@ -29,7 +29,6 @@ export default function AIExtractionTest() {
       setSelectedFile(file);
       setExtractionResult(null);
       setError(null);
-      setSaveResult(null);
     }
   };
 
