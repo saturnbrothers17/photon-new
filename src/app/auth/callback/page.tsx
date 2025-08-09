@@ -1,14 +1,22 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { CheckCircle, XCircle, Loader2 } from 'lucide-react';
 
-export default function AuthCallback() {
-  const router = useRouter();
+function LoadingSpinner() {
+  return (
+    <div className="flex items-center justify-center min-h-[60vh]">
+      <Loader2 className="h-8 w-8 animate-spin text-primary" />
+    </div>
+  );
+}
+
+function AuthCallbackContent() {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading');
   const [message, setMessage] = useState('Processing authentication...');
 
@@ -30,7 +38,6 @@ export default function AuthCallback() {
       }
 
       try {
-        // Exchange authorization code for tokens
         const response = await fetch('/api/auth/google', {
           method: 'POST',
           headers: {
@@ -45,14 +52,12 @@ export default function AuthCallback() {
           throw new Error(result.error);
         }
 
-        // Store tokens and authentication status
         localStorage.setItem('googleDriveTokens', JSON.stringify(result.tokens));
         localStorage.setItem('googleDriveAuth', 'true');
         
         setStatus('success');
         setMessage('Successfully connected to Google Drive!');
         
-        // Redirect to dashboard after 3 seconds
         setTimeout(() => {
           router.push('/teacher-dashboard');
         }, 3000);
@@ -139,5 +144,14 @@ export default function AuthCallback() {
         </CardContent>
       </Card>
     </div>
+  );
+}
+
+// This is the main page component that Next.js will render
+export default function AuthCallback() {
+  return (
+    <Suspense fallback={<LoadingSpinner />}>
+      <AuthCallbackContent />
+    </Suspense>
   );
 }

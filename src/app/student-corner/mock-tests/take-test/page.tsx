@@ -1,19 +1,36 @@
 "use client";
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { CheckCircle, ChevronLeft, ChevronRight, Clock, Flag, TriangleAlert, Save, Shield, Lock } from "lucide-react";
+import { CheckCircle, ChevronLeft, ChevronRight, Clock, Flag, TriangleAlert, Save, Shield, Lock, Loader2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import SecureTestEnvironment from "@/components/student-corner/SecureTestEnvironment";
 
-export default function TakeTest() {
+function LoadingSpinner() {
+  return (
+    <div className="flex items-center justify-center min-h-[60vh]">
+      <Loader2 className="h-8 w-8 animate-spin text-primary" />
+    </div>
+  );
+}
+
+// This is the main page component that Next.js will render
+export default function TakeTestPage() {
+  return (
+    <Suspense fallback={<LoadingSpinner />}>
+      <TakeTestContent />
+    </Suspense>
+  );
+}
+
+function TakeTestContent() {
   const searchParams = useSearchParams();
   const testId = searchParams.get('testId');
-
+  
   const [testData, setTestData] = useState<any | null>(null);
   const [questions, setQuestions] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
