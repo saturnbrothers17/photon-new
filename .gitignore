@@ -159,3 +159,4 @@ GET_SERVICE_ROLE_KEY.md
 
 # Backup files
 *.backup
+.vercel
