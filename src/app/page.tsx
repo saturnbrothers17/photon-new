@@ -1,23 +1,116 @@
-import { Award, BookOpen, Target, Users, GraduationCap, Briefcase, Lightbulb, Zap, ArrowRight } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import Link from 'next/link';
-import Image from 'next/image';
-import styles from './styles.module.css';
-import type { Metadata } from 'next';
+export default function HomePage() {
+  return (
+    <div style={{ textAlign: 'center' }}>
+      <div style={{ 
+        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+        color: 'white',
+        padding: '60px 20px',
+        borderRadius: '10px',
+        marginBottom: '40px'
+      }}>
+        <h1 style={{ fontSize: '3rem', margin: '0 0 20px 0' }}>
+          🎓 Welcome to PHOTON
+        </h1>
+        <p style={{ fontSize: '1.5rem', margin: '0 0 30px 0' }}>
+          Premier Coaching Institute for IIT-JEE & NEET
+        </p>
+        <p style={{ fontSize: '1.2rem', opacity: 0.9 }}>
+          Varanasi's #1 Choice for Engineering & Medical Entrance Preparation
+        </p>
+      </div>
 
-export const metadata: Metadata = {
-  title: 'Home | PHOTON - Best Coaching for IIT-JEE & NEET in Varanasi',
-  description: 'Welcome to PHOTON, Varanasi\'s #1 coaching institute for JEE & NEET. Offering online and offline classes with a proven track record of success. Admissions open for Class 11, 12, and Droppers.',
-  keywords: "best coaching in varanasi, jee coaching varanasi, neet coaching varanasi, iit coaching in varanasi, coaching for class 11 in varanasi, coaching for class 12 in varanasi, photon varanasi, jai prakash mishra",
-};
+      <div style={{ 
+        display: 'grid', 
+        gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', 
+        gap: '20px',
+        marginBottom: '40px'
+      }}>
+        <div style={{ 
+          background: '#f8f9fa', 
+          padding: '30px', 
+          borderRadius: '10px',
+          border: '1px solid #e9ecef'
+        }}>
+          <h3 style={{ color: '#0066cc', marginBottom: '15px' }}>📚 Expert Faculty</h3>
+          <p>16+ years of teaching excellence with experienced IIT & Medical graduates</p>
+        </div>
+        
+        <div style={{ 
+          background: '#f8f9fa', 
+          padding: '30px', 
+          borderRadius: '10px',
+          border: '1px solid #e9ecef'
+        }}>
+          <h3 style={{ color: '#0066cc', marginBottom: '15px' }}>🎯 Proven Results</h3>
+          <p>Hundreds of successful selections in IIT-JEE, NEET, and other competitive exams</p>
+        </div>
+        
+        <div style={{ 
+          background: '#f8f9fa', 
+          padding: '30px', 
+          borderRadius: '10px',
+          border: '1px solid #e9ecef'
+        }}>
+          <h3 style={{ color: '#0066cc', marginBottom: '15px' }}>💻 Modern Teaching</h3>
+          <p>AI-powered learning platform with interactive tests and personalized guidance</p>
+        </div>
+      </div>
 
-const stats = [
-  {
-    icon: <Briefcase className="h-10 w-10 text-primary" />,
-    value: '16+',
-    label: 'Years of excellence',
-  },
+      <div style={{ 
+        background: '#e3f2fd', 
+        padding: '40px', 
+        borderRadius: '10px',
+        marginBottom: '40px'
+      }}>
+        <h2 style={{ color: '#1976d2', marginBottom: '20px' }}>🚀 Quick Navigation</h2>
+        <div style={{ display: 'flex', gap: '20px', justifyContent: 'center', flexWrap: 'wrap' }}>
+          <a href="/student-corner" style={{ 
+            background: '#1976d2', 
+            color: 'white', 
+            padding: '15px 30px', 
+            borderRadius: '5px', 
+            textDecoration: 'none',
+            display: 'inline-block'
+          }}>
+            👨‍🎓 Student Corner
+          </a>
+          <a href="/teacher-dashboard" style={{ 
+            background: '#388e3c', 
+            color: 'white', 
+            padding: '15px 30px', 
+            borderRadius: '5px', 
+            textDecoration: 'none',
+            display: 'inline-block'
+          }}>
+            👨‍🏫 Teacher Dashboard
+          </a>
+          <a href="/test-deployment" style={{ 
+            background: '#f57c00', 
+            color: 'white', 
+            padding: '15px 30px', 
+            borderRadius: '5px', 
+            textDecoration: 'none',
+            display: 'inline-block'
+          }}>
+            🧪 Test Deployment
+          </a>
+        </div>
+      </div>
+
+      <div style={{ 
+        background: '#fff3e0', 
+        padding: '30px', 
+        borderRadius: '10px',
+        border: '2px solid #ff9800'
+      }}>
+        <h2 style={{ color: '#f57c00', marginBottom: '15px' }}>📞 Contact Information</h2>
+        <p><strong>Address:</strong> New Colony Kakarmatta, Sundarpur, Nagwa, Varanasi, UP 221004</p>
+        <p><strong>Phone:</strong> (+91) 94505 45318</p>
+        <p><strong>Email:</strong> jpm2005physics@gmail.com</p>
+      </div>
+    </div>
+  );
+}
   {
     icon: <GraduationCap className="h-10 w-10 text-primary" />,
     value: '10,000+',
