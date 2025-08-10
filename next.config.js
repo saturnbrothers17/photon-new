@@ -20,7 +20,6 @@ const nextConfig = {
   // Enable experimental features
   experimental: {
     optimizeCss: true,
-    serverComponentsExternalPackages: ['@supabase/supabase-js'],
     optimizePackageImports: [
       '@radix-ui/react-icons',
       'lucide-react',
@@ -31,6 +30,9 @@ const nextConfig = {
       '@radix-ui/react-tabs',
     ],
   },
+  
+  // Server external packages (moved from experimental)
+  serverExternalPackages: ['@supabase/supabase-js'],
   
   // Compiler options
   compiler: {

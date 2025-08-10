@@ -10,6 +10,8 @@ import InstantNavigation from "@/components/common/InstantNavigation";
 import Script from "next/script";
 import { AuthProvider } from "@/components/AuthProvider";
 import { PerformanceWrapper, ResourceHints } from "@/components/PerformanceWrapper";
+import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/react';
 
 
 // import { AiAssistant } from "@/components/ai/AiAssistant";
@@ -63,6 +65,8 @@ export default function RootLayout({
             <Footer />
 
             <Toaster />
+            <Analytics />
+            <SpeedInsights />
           </PerformanceWrapper>
         </AuthProvider>
       </body>
